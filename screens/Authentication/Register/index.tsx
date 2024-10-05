@@ -16,11 +16,11 @@ import { useTheme } from "@react-navigation/native";
 import { textStyles } from "@/constants/Typography";
 import FormInput from "@/components/ui/input/form-input";
 import AnimatedCheckbox from "react-native-checkbox-reanimated";
-import GoogleIcon from "./Google.svg";
-import AppleIcon from "./Apple.svg";
-import FacebookIcon from "./Facebook.svg";
+import GoogleIcon from "../Google.svg";
+import AppleIcon from "../Apple.svg";
+import FacebookIcon from "../Facebook.svg";
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
   /* States */
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -313,7 +313,7 @@ const LoginScreen = () => {
             ]}
           >
             <Text className="text-white" style={textStyles.bodyXlargeBold}>
-              Log in
+              Continue
             </Text>
           </TouchableOpacity>
         </View>
@@ -322,4 +322,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;

@@ -12,10 +12,8 @@ import { useFonts } from "expo-font";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { SafeAreaView } from "react-native-safe-area-context";
-import AuthenticationHome from "@/screens/Authentication/AuthenticationHome";
-import LoginScreen from "@/screens/Authentication/Login";
-import LoadingScreen from "@/screens/LoadingScreen";
-import Walkthrough from "@/screens/Walkthrough";
+import RegisterScreen from "@/screens/Authentication/Register";
+import RegisterStepOne from "@/screens/Authentication/Register/step-1";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -56,7 +54,7 @@ export default function RootLayout() {
         className="bg-white dark:bg-dark-1 relative"
         style={styles.container}
       >
-        <LoginScreen />
+        <RegisterStepOne />
       </SafeAreaView>
     </ThemeProvider>
   );

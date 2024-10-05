@@ -122,7 +122,16 @@ const RegisterStepOne = (props: Props) => {
             </Text>
           </View>
 
-          <AvatarUpload uploadable size={120} name="John Doe" />
+          <View
+            style={{
+              height: 120,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <AvatarUpload uploadable size={120} name="John Doe" />
+          </View>
 
           {/* Terms and Policy */}
           <View

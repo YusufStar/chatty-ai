@@ -39,14 +39,21 @@ const AvatarUpload = (props: Props) => {
     });
 
     if (!result.canceled) {
-      console.log(result.assets[0].uri);
-      setImage(result.assets[0].uri);
+      if (result.assets[0].fileSize && result.assets[0].fileSize > 1000000) {
+        alert("Image size must be less than 1MB");
+        return;
+      }
+      const uri = result.assets[0].uri;
+      setImage(uri ?? "");
     }
   };
 
   return (
     <View>
-      <Pressable onPress={pickImage}>
+      <Pressable
+        onPress={pickImage}
+        style={{ width: props.size, height: props.size }}
+      >
         <View
           style={{
             width: props.size,
@@ -54,7 +61,11 @@ const AvatarUpload = (props: Props) => {
             position: "relative",
           }}
         >
-          <UserAvatar size={props.size} name={props.name} />
+          <UserAvatar
+            src={image ? image : undefined}
+            size={props.size}
+            name={props.name}
+          />
           {props.uploadable && (
             <View
               style={{

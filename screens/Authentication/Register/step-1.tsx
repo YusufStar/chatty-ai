@@ -1,9 +1,8 @@
-import FormInput from "@/components/ui/input/form-input";
 import { global } from "@/constants/Globals";
 import { textStyles } from "@/constants/Typography";
 import { ArrowLeft } from "@lnanhkhoa/react-native-iconly";
 import { useTheme } from "@react-navigation/native";
-import React from "react";
+import React, { useState } from "react";
 import {
   Dimensions,
   KeyboardAvoidingView,
@@ -19,10 +18,23 @@ import GoogleIcon from "../Google.svg";
 import AppleIcon from "../Apple.svg";
 import FacebookIcon from "../Facebook.svg";
 import AvatarUpload from "@/components/ui/upload/avatar-upload";
+import {
+  FormDate,
+  FormInput,
+  FormSelect,
+} from "@/components/ui/input/form-input";
+import { Dayjs } from "dayjs";
 
 type Props = {};
 
 const RegisterStepOne = (props: Props) => {
+  const [avatar, setAvatar] = useState<string | null>(null);
+  const [fullName, setFullName] = useState<string | null>(null);
+  const [phone, setPhone] = useState<string | null>(null);
+  const [gender, setGender] = useState<"male" | "female" | null>(null);
+  const [birthday, setBirthday] = useState<Dayjs | null>(null);
+  const [adress, setAdress] = useState<string | null>(null);
+
   const { dark } = useTheme();
 
   const styles = StyleSheet.create({
@@ -84,6 +96,23 @@ const RegisterStepOne = (props: Props) => {
     },
   });
 
+  const handleAvatarChange = (value: string) => {
+    console.log(value);
+    setAvatar(value);
+  };
+
+  const handleStepOneContinue = () => {
+    console.log(birthday?.locale("vi").format("DD/MM/YYYY"));
+  };
+
+  const formatDate = (initialDate: Date) => {
+    const date = new Date(initialDate);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <KeyboardAvoidingView
       behavior="padding"
@@ -130,55 +159,81 @@ const RegisterStepOne = (props: Props) => {
               justifyContent: "center",
             }}
           >
-            <AvatarUpload uploadable size={120} name="John Doe" />
+            <AvatarUpload
+              uploadable
+              size={120}
+              name="John Doe"
+              onChange={handleAvatarChange}
+              value={avatar}
+            />
           </View>
 
-          {/* Terms and Policy */}
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: 16,
-              alignItems: "center",
-            }}
+          <FormInput
+            label="Full Name"
+            placeholder="John Doe"
+            type="text"
+            value={fullName ?? ""}
+            onChange={setFullName}
+          />
+
+          <FormInput
+            label="Phone"
+            placeholder="0900000000"
+            type="number"
+            value={phone ?? ""}
+            onChange={setPhone}
+          />
+
+          <FormSelect
+            label="Gender"
+            placeholder="Male"
+            options={["Male", "Female"]}
+            value={gender ?? ""}
+            onChange={(value: string) =>
+              setGender(value as "male" | "female" | null)
+            }
+          />
+
+          <FormDate
+            label="Birthday"
+            placeholder="2000-01-01"
+            value={formatDate(birthday ?? new Date())}
+            onChange={(value: Dayjs) => setBirthday(value)}
+          />
+
+          <FormInput
+            label="Address"
+            placeholder="1234 Main St, Anytown, USA"
+            type="text"
+            value={adress ?? ""}
+            onChange={setAdress}
+          />
+        </View>
+
+        <View
+          style={{
+            width: Dimensions.get("window").width,
+            padding: 24,
+            paddingBottom: 36,
+            display: "flex",
+          }}
+        >
+          <TouchableOpacity
+            onPress={handleStepOneContinue}
+            disabled={!fullName || !phone || !gender || !birthday || !adress}
+            activeOpacity={0.75}
+            className="bg-[#17CE92]"
+            style={[
+              styles.actionButton,
+              !!fullName && !!phone && !!gender && !!birthday && !!adress
+                ? styles.nextShadow
+                : { opacity: 0.5 },
+            ]}
           >
-            <Pressable
-              style={{
-                width: 32,
-                height: 32,
-              }}
-            >
-              <AnimatedCheckbox
-                highlightColor="#fff"
-                checkmarkColor="#000"
-                boxOutlineColor="#17CE92"
-                // @ts-ignore
-                dark={dark}
-              />
-            </Pressable>
-
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 4,
-                flexWrap: "wrap",
-              }}
-            >
-              <Text
-                className="text-[#212121] dark:text-[#fff]"
-                style={textStyles.bodyLargeSemiBold}
-              >
-                I agree to ChattyAI
-              </Text>
-              <Text
-                className="text-[#17CE92]"
-                style={textStyles.bodyLargeSemiBold}
-              >
-                Public Agreement, Terms, & Privacy Policy.
-              </Text>
-            </View>
-          </View>
+            <Text className="text-white" style={textStyles.bodyXlargeBold}>
+              Continue
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

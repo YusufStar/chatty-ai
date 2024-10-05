@@ -8,11 +8,11 @@ type Props = {
   size: number;
   name: string;
   uploadable?: boolean;
+  value: string | null;
+  onChange?: (value: string) => void;
 };
 
 const AvatarUpload = (props: Props) => {
-  const [image, setImage] = useState<string | null>(null);
-
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
@@ -44,7 +44,7 @@ const AvatarUpload = (props: Props) => {
         return;
       }
       const uri = result.assets[0].uri;
-      setImage(uri ?? "");
+      props.onChange?.(uri ?? "");
     }
   };
 
@@ -62,7 +62,7 @@ const AvatarUpload = (props: Props) => {
           }}
         >
           <UserAvatar
-            src={image ? image : undefined}
+            src={props.value ? props.value : undefined}
             size={props.size}
             name={props.name}
           />

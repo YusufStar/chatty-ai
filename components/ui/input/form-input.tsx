@@ -17,6 +17,7 @@ import Animated, {
 } from "react-native-reanimated";
 import DateTimePicker from "react-native-ui-datepicker";
 import dayjs, { Dayjs, isDayjs } from "dayjs";
+import { global } from "@/constants/Globals";
 
 type Props = {
   label: string;

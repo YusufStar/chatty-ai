@@ -14,17 +14,21 @@ import {
 import { ArrowLeft, Hide, Message } from "@lnanhkhoa/react-native-iconly";
 import { useTheme } from "@react-navigation/native";
 import { textStyles } from "@/constants/Typography";
-import FormInput from "@/components/ui/input/form-input";
 import AnimatedCheckbox from "react-native-checkbox-reanimated";
 import GoogleIcon from "./Google.svg";
 import AppleIcon from "./Apple.svg";
 import FacebookIcon from "./Facebook.svg";
+import { FormInput } from "@/components/ui/input/form-input";
+import FetchDialog from "@/components/ui/dialog/fetch-dialog";
+import LoginSvg from "./login-dialog.svg";
 
 const LoginScreen = () => {
   /* States */
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checked, setChecked] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
   const handleCheckboxPress = () => {
     setChecked((prev) => {
@@ -43,6 +47,7 @@ const LoginScreen = () => {
       display: "flex",
       flex: 1,
       width: "100%",
+      maxHeight: Dimensions.get("window").height,
     },
     button: {
       padding: 10,
@@ -92,12 +97,17 @@ const LoginScreen = () => {
     },
   });
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     console.log({
       email,
       password,
       checked,
     });
+
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    setSuccess(true);
+    setLoading(false);
   };
 
   return (
@@ -106,6 +116,14 @@ const LoginScreen = () => {
       keyboardVerticalOffset={-200}
       style={global.container}
     >
+      {loading && (
+        <FetchDialog
+          variant="login"
+          promise={loading}
+          success={success}
+          Illustration={<LoginSvg width={180} height={180} />}
+        />
+      )}
       <ScrollView
         style={{
           width: Dimensions.get("window").width,
@@ -126,13 +144,13 @@ const LoginScreen = () => {
               className="text-[#212121] dark:text-white"
               style={textStyles.h3Bold}
             >
-              Hello there 👋
+              Welcome back 👋
             </Text>
             <Text
               className="text-[#212121] dark:text-white"
               style={textStyles.bodyXlargeRegular}
             >
-              Please enter your email & password to create an account.
+              Please enter your email & password to log in.
             </Text>
           </View>
 
@@ -195,27 +213,12 @@ const LoginScreen = () => {
               />
             </Pressable>
 
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 4,
-                flexWrap: "wrap",
-              }}
+            <Text
+              className="text-[#212121] dark:text-[#fff]"
+              style={textStyles.bodyLargeSemiBold}
             >
-              <Text
-                className="text-[#212121] dark:text-[#fff]"
-                style={textStyles.bodyLargeSemiBold}
-              >
-                I agree to ChattyAI
-              </Text>
-              <Text
-                className="text-[#17CE92]"
-                style={textStyles.bodyLargeSemiBold}
-              >
-                Public Agreement, Terms, & Privacy Policy.
-              </Text>
-            </View>
+              Remember me
+            </Text>
           </View>
 
           <View
@@ -225,6 +228,17 @@ const LoginScreen = () => {
               height: 1,
             }}
           />
+          <Text
+            style={[
+              textStyles.h6Bold,
+              {
+                color: "#17CE92",
+                textAlign: "center",
+              },
+            ]}
+          >
+            Forgot password?
+          </Text>
 
           <View
             style={{
@@ -238,12 +252,19 @@ const LoginScreen = () => {
           >
             <Text
               className="text-[#212121] dark:text-[#fff]"
-              style={textStyles.bodyLargeMedium}
+              style={[textStyles.bodyLargeMedium]}
             >
-              Already have an account?
+              Don’t have an account?
             </Text>
-            <Text style={[textStyles.bodyLargeBold, { color: "#17CE92" }]}>
-              Log in
+            <Text
+              style={[
+                textStyles.h6Bold,
+                {
+                  color: "#17CE92",
+                },
+              ]}
+            >
+              Sign up
             </Text>
           </View>
 

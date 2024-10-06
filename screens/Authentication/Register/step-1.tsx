@@ -13,10 +13,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import AnimatedCheckbox from "react-native-checkbox-reanimated";
-import GoogleIcon from "../Google.svg";
-import AppleIcon from "../Apple.svg";
-import FacebookIcon from "../Facebook.svg";
+import FetchDialog from "@/components/ui/dialog/fetch-dialog";
+import RegisterSvg from "./register-dialog.svg";
 import AvatarUpload from "@/components/ui/upload/avatar-upload";
 import {
   FormDate,
@@ -34,6 +32,8 @@ const RegisterStepOne = (props: Props) => {
   const [gender, setGender] = useState<"male" | "female" | null>(null);
   const [birthday, setBirthday] = useState<Dayjs | null>(null);
   const [adress, setAdress] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
   const { dark } = useTheme();
 
@@ -101,10 +101,6 @@ const RegisterStepOne = (props: Props) => {
     setAvatar(value);
   };
 
-  const handleStepOneContinue = () => {
-    console.log(birthday?.locale("vi").format("DD/MM/YYYY"));
-  };
-
   const formatDate = (initialDate: Date) => {
     const date = new Date(initialDate);
     const day = date.getDate();
@@ -113,12 +109,37 @@ const RegisterStepOne = (props: Props) => {
     return `${day}/${month}/${year}`;
   };
 
+  const handleStepOneContinue = async () => {
+    console.log({
+      avatar,
+      fullName,
+      phone,
+      gender,
+      birthday: birthday?.locale("vi").format("DD/MM/YYYY"),
+      adress,
+    });
+
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    setSuccess(true);
+    setLoading(false);
+  };
+
   return (
     <KeyboardAvoidingView
       behavior="padding"
       keyboardVerticalOffset={-200}
       style={global.container}
     >
+      {loading && (
+        <FetchDialog
+          variant="register"
+          promise={loading}
+          success={success}
+          Illustration={<RegisterSvg width={180} height={180} />}
+        />
+      )}
+
       <ScrollView
         style={{
           width: Dimensions.get("window").width,
@@ -162,7 +183,9 @@ const RegisterStepOne = (props: Props) => {
             <AvatarUpload
               uploadable
               size={120}
-              name="John Doe"
+              name={
+                fullName === null || fullName === "" ? "John Doe" : fullName
+              }
               onChange={handleAvatarChange}
               value={avatar}
             />

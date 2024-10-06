@@ -43,6 +43,7 @@ const RegisterScreen = () => {
       display: "flex",
       flex: 1,
       width: "100%",
+      maxHeight: Dimensions.get("window").height,
     },
     button: {
       padding: 10,

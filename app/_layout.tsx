@@ -12,8 +12,9 @@ import { useFonts } from "expo-font";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { SafeAreaView } from "react-native-safe-area-context";
-import RegisterScreen from "@/screens/Authentication/Register";
-import RegisterStepOne from "@/screens/Authentication/Register/step-1";
+import LoginScreen from "@/screens/Authentication/Login";
+import ResetPasswordScreen from "@/screens/Authentication/Reset-Password";
+import OtpScreen from "@/screens/Authentication/Reset-Password/otp";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -54,7 +55,7 @@ export default function RootLayout() {
         className="bg-white dark:bg-dark-1 relative"
         style={styles.container}
       >
-        <RegisterStepOne />
+        <OtpScreen />
       </SafeAreaView>
     </ThemeProvider>
   );
